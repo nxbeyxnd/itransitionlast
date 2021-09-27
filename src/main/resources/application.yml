@@ -2,10 +2,10 @@ server:
   port: 8190
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL
-    username: root
-    password:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://ec2-63-33-14-215.eu-west-1.compute.amazonaws.com:5432/d8smhtqvac0hln
+    username: dzepunjkmctdaa
+    password: f86f521799ba5cbd28fa3f0596507e19229b7f5ae6cbb6ab396facd7265ff36b
   security:
     oauth2:
       client:
@@ -32,6 +32,6 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 jwt:
   secret: memes
