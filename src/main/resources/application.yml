@@ -17,14 +17,14 @@ spring:
               - email
               - profile
               - openid
-            github:
-              clientId: 05adffca120cfc8ffba4
-              clientSecret: 4546e1ae6d4f1128d07959fed6711b7437bd31c0
-              scope:
-                - user
-            facebook:
-              clientId: 238999834836830
-              clientSecret: 9a3ae93036bc4ceef119aed2d6f03972
+          github:
+            clientId: 05adffca120cfc8ffba4
+            clientSecret: 4546e1ae6d4f1128d07959fed6711b7437bd31c0
+            scope:
+              - user
+          facebook:
+            clientId: 238999834836830
+            clientSecret: 9a3ae93036bc4ceef119aed2d6f03972
   flyway:
     enabled: true
     locations: classpath:/db/migration
