@@ -16,4 +16,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .anyRequest().hasAnyRole("USER","ADMIN")
                 .and().oauth2Login();
     }
+
+//    @Override
+//    public void configure(org.springframework.security.config.annotation.web.builders.WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/h2-console/**");
+//    }
 }

@@ -6,6 +6,10 @@ spring:
     url: jdbc:postgresql://ec2-63-33-14-215.eu-west-1.compute.amazonaws.com:5432/d8smhtqvac0hln
     username: dzepunjkmctdaa
     password: f86f521799ba5cbd28fa3f0596507e19229b7f5ae6cbb6ab396facd7265ff36b
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL
+#    username: root
+#    password:
   security:
     oauth2:
       client:
@@ -25,9 +29,21 @@ spring:
           facebook:
             clientId: 238999834836830
             clientSecret: 9a3ae93036bc4ceef119aed2d6f03972
-  flyway:
-    enabled: true
-    locations: classpath:/db/migration
+# DELETE BLOCK LOWER ------------
+#  h2:
+#    console:
+#      enabled: true
+#      settings:
+#        web-allow-others: false
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.H2Dialect
+#  flyway:
+#    enabled: true
+#    locations: classpath:/db/migration
+#HERE IS LINE ---------
   jpa:
     show-sql: true
     properties:
@@ -35,3 +51,5 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 jwt:
   secret: memes
+
+
