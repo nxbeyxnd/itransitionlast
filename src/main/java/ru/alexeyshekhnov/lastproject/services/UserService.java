@@ -2,18 +2,26 @@ package ru.alexeyshekhnov.lastproject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.alexeyshekhnov.lastproject.dto.TaskDto;
 import ru.alexeyshekhnov.lastproject.dto.UserpageDto;
 import ru.alexeyshekhnov.lastproject.entities.Role;
+import ru.alexeyshekhnov.lastproject.entities.Task;
 import ru.alexeyshekhnov.lastproject.entities.User;
 import ru.alexeyshekhnov.lastproject.repositories.RoleRepository;
+import ru.alexeyshekhnov.lastproject.repositories.TaskRepository;
 import ru.alexeyshekhnov.lastproject.repositories.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -39,6 +47,14 @@ public class UserService {
     }
 
     public UserpageDto findUserById(Long id){
-        return new UserpageDto(userRepository.getById(id));
+        List<TaskDto> tasks = new ArrayList<>();
+        for (Task t: taskRepository.findAllByUser_Id(id)){
+            tasks.add(new TaskDto(t));
+        }
+        return new UserpageDto(userRepository.getById(id),tasks);
+    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
     }
 }

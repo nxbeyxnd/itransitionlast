@@ -3,10 +3,12 @@ package ru.alexeyshekhnov.lastproject.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import ru.alexeyshekhnov.lastproject.configurations.jwt.JwtProvider;
 import ru.alexeyshekhnov.lastproject.dto.AuthResponseDto;
 import ru.alexeyshekhnov.lastproject.dto.UserDto;
@@ -16,10 +18,11 @@ import ru.alexeyshekhnov.lastproject.services.UserService;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/")
-public class MainController {
+@CrossOrigin(origins = "http://localhost:4200")
+public class OauthController {
     @Autowired
     private UserService userService;
 
@@ -27,11 +30,10 @@ public class MainController {
     private JwtProvider jwtProvider;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public UserDto showUserPage(@AuthenticationPrincipal OAuth2User principal) {
+    public RedirectView showUserPage(@AuthenticationPrincipal OAuth2User principal, RedirectAttributes attributes) {
         User user = new User();
         Map<String, Object> map = principal.getAttributes();
-        userService.findByEmail(map.get("email").toString()).orElseGet(()->{
+        userService.findByEmail(map.get("email").toString()).orElseGet(() -> {
             user.setEmail(map.get("email").toString());
             user.setUsername(map.get("name").toString());
             user.setRegisterAt(LocalDateTime.now());
@@ -41,21 +43,7 @@ public class MainController {
             return user;
         });
         user.setVisitedAt(LocalDateTime.now());
-        return new UserDto(user);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/help")
-    public User showUser(@AuthenticationPrincipal OAuth2User principal){
-        Map<String, Object> map = principal.getAttributes();
-        return userService.findUserByEmail(map.get("email").toString());
-    }
-
-    @GetMapping("/log")
-    public AuthResponseDto auth(@AuthenticationPrincipal OAuth2User principal) {
-        Map<String, Object> map = principal.getAttributes();
-        User user = userService.findUserByEmail(map.get("email").toString());
-        String token = jwtProvider.generateToken(user.getEmail());
-        return new AuthResponseDto(token);
+        attributes.addAttribute("token", jwtProvider.generateToken(map.get("email").toString()));
+        return new RedirectView("http://localhost:4200/");
     }
 }

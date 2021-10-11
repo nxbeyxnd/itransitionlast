@@ -11,6 +11,7 @@ import ru.alexeyshekhnov.lastproject.services.UserService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserPageController {
     @Autowired
     private UserService userService;
@@ -18,14 +19,13 @@ public class UserPageController {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @GetMapping("/whoami")
+    @GetMapping("/me")
     public User getAllInfo(@RequestHeader("Authorization") String token){
         return userService.findUserByEmail(jwtProvider.getLoginFromToken(token));
     }
 
     @GetMapping("/{id}")
-    public UserpageDto getUserpage(@PathVariable Long id){
+    public UserpageDto findAll(@PathVariable Long id){
         return userService.findUserById(id);
     }
-
 }

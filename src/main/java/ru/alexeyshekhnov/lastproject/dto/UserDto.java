@@ -12,7 +12,6 @@ public class UserDto {
     private Long id;
     private String username;
     private String email;
-    private String social;
     private LocalDateTime registerAt;
     private LocalDateTime visitedAt;
 
@@ -20,7 +19,6 @@ public class UserDto {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
-        this.social = user.getSocial();
         this.registerAt = user.getRegisterAt();
         this.visitedAt = user.getVisitedAt();
     }

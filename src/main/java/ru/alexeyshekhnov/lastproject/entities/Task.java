@@ -2,6 +2,7 @@ package ru.alexeyshekhnov.lastproject.entities;
 
 
 import lombok.Data;
+import ru.alexeyshekhnov.lastproject.dto.UserTaskDto;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Task {
     private String answer;
 
     @OneToMany
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = "id")
     private List<Tag> tag;
 
     @OneToOne
