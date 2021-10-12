@@ -30,7 +30,6 @@ public class TaskController {
     @Autowired
     private JwtProvider jwtProvider;
 
-    //TODO Change THAT to POSTRequest
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.OK)
     public void addNewTask(@RequestBody() String taskParams, @RequestHeader("Authorization") String token){
