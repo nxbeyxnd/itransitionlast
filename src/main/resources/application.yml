@@ -3,29 +3,26 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://ec2-63-33-14-215.eu-west-1.compute.amazonaws.com:5432/d8smhtqvac0hln
-    username: dzepunjkmctdaa
-    password: f86f521799ba5cbd28fa3f0596507e19229b7f5ae6cbb6ab396facd7265ff36b
+    url: ${JDBC_ACCESS}
+    username: ${JDBC_UN}
+    password: ${JDBC_PASS}
   security:
     oauth2:
       client:
         registration:
           google:
-#            client-id: 23053377844-eulbn7b8ovsr31lgvo72135nsl0s950b.apps.googleusercontent.com
             client-id: ${GOOGLE_CLI_ID}
-            client-secret: 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
+            client-secret: ${GOOGLE_CLI_SECRET}
             scope:
               - email
               - profile
               - openid
           github:
-            clientId: 05adffca120cfc8ffba4
-            clientSecret: 4546e1ae6d4f1128d07959fed6711b7437bd31c0
-            redirectURI: http://localhost:4200/callback
+            clientId: ${GITHUB_CLI_ID}
+            clientSecret: ${GITHUB_CLI_SECRET}
           facebook:
-            clientId: 238999834836830
-            clientSecret: 9a3ae93036bc4ceef119aed2d6f03972
-            redirectURI: http://localhost:4200/callback
+            clientId: ${FB_CLI_ID}
+            clientSecret: ${FB_CLI_ID}
   jpa:
     show-sql: true
     properties:
@@ -33,5 +30,3 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 jwt:
   secret: memes
-
-
