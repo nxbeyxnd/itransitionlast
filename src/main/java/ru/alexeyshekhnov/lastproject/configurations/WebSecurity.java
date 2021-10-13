@@ -20,7 +20,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .mvcMatchers("/login/**","/logout","/api/v1/**").permitAll()
-                .anyRequest().hasAnyRole("USER","ADMIN")
+                .anyRequest().permitAll()
+//                .anyRequest().hasAnyRole("USER","ADMIN")
                 .and().oauth2Login()
                 .and().cors().configurationSource(corsConfigurationSource());
     }
