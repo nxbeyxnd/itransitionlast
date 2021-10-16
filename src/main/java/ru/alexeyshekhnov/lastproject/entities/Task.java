@@ -2,9 +2,9 @@ package ru.alexeyshekhnov.lastproject.entities;
 
 
 import lombok.Data;
-import ru.alexeyshekhnov.lastproject.dto.UserTaskDto;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,9 +22,12 @@ public class Task {
     @Column(name = "answer")
     private String answer;
 
-    @OneToMany
-    @JoinColumn(name = "id")
-    private List<Tag> tag;
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JoinTable(name = "tasks_tag",
+            joinColumns = @JoinColumn(name = "id_task"),
+            inverseJoinColumns = @JoinColumn(name = "id_tag"))
+    private List<Tag> tag = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "user_id")
