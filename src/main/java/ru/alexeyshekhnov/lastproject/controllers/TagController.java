@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tags")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://itransitionproject.herokuapp.com/")
 public class TagController {
     @Autowired
     TagService tagService;
@@ -21,13 +21,11 @@ public class TagController {
 
     @PostMapping("/add")
     public void addNewTags(@RequestBody Tag tag) {
-        if(tagService.findTagByName(tag.getName()).isPresent()){
-            tagService.saveOrUpdate(tag);
-        }
+        tagService.saveOrUpdate(tag);
     }
 
     @DeleteMapping("/delete")
-    public void deleteAll(){
+    public void deleteAll() {
         tagService.deleteAll();
     }
 }

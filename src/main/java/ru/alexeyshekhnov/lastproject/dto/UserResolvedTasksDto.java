@@ -9,16 +9,14 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class TaskDto {
+public class UserResolvedTasksDto {
     private Long id;
     private String desc;
     private List<Tag> tag;
-    private TaskUserCreatorDto userTaskDto;
 
-    public TaskDto(Task task) {
+    public UserResolvedTasksDto(Task task) {
         this.id = task.getId();
         this.desc = task.getDesc();
         this.tag = task.getTag();
-        this.userTaskDto = new TaskUserCreatorDto(task.getUser());
     }
 }

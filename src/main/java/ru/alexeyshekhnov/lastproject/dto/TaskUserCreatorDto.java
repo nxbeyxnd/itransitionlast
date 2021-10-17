@@ -6,10 +6,10 @@ import ru.alexeyshekhnov.lastproject.entities.User;
 
 @Data
 @NoArgsConstructor
-public class UserTaskDto {
+public class TaskUserCreatorDto {
     private String username;
 
-    public UserTaskDto(User user) {
+    public TaskUserCreatorDto(User user) {
         this.username = user.getUsername();
     }
 }

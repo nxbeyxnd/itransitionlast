@@ -7,6 +7,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.alexeyshekhnov.lastproject.configurations.jwt.JwtProvider;
 import ru.alexeyshekhnov.lastproject.dto.TaskDto;
+import ru.alexeyshekhnov.lastproject.dto.UserResolvedTasksDto;
 import ru.alexeyshekhnov.lastproject.dto.UserpageDto;
 import ru.alexeyshekhnov.lastproject.entities.Role;
 import ru.alexeyshekhnov.lastproject.entities.Task;
@@ -33,37 +34,58 @@ public class UserService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private TaskService taskService;
+
+    @Autowired
     private JwtProvider jwtProvider;
 
-    public User saveOrUpdate(User user){
+    public User saveOrUpdate(User user) {
         Role role = roleRepository.findByName("ROLE_USER");
-        if(user.getSocial().contains("google"))
+        if (user.getSocial().contains("google"))
             user.setSocial("Google");
-        else if(user.getSocial().contains("github"))
+        else if (user.getSocial().contains("github"))
             user.setSocial("GitHub");
-        else if(user.getSocial().contains("facebook"))
+        else if (user.getSocial().contains("facebook"))
             user.setSocial("Facebook");
         user.setRole(role);
         return userRepository.save(user);
     }
 
-    public Optional<User> findByEmail(String email){
+    public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public User findUserByEmail(String email){
+    public UserpageDto findUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email);
+        return new UserpageDto(user,getAllTasksByUSerId(user.getId()),getAllResolvedTaskByUserId(user.getId()));
+    }
+
+    public User getUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
 
-    public UserpageDto findUserById(Long id){
-        List<TaskDto> tasks = new ArrayList<>();
-        for (Task t: taskRepository.findAllByUser_Id(id)){
-            tasks.add(new TaskDto(t));
-        }
-        return new UserpageDto(userRepository.getById(id),tasks);
+    public UserpageDto findUserById(Long id) {
+        return new UserpageDto(userRepository.getById(id), getAllTasksByUSerId(id), getAllResolvedTaskByUserId(id));
     }
 
-    public RedirectView AuthUser(OAuth2User principal, RedirectAttributes attributes){
+    public List<UserResolvedTasksDto> getAllResolvedTaskByUserId(Long id){
+        User user = userRepository.getUserById(id);
+        List<UserResolvedTasksDto> resolvedTasks = new ArrayList<>();
+        for (Task t : user.getTask()) {
+            resolvedTasks.add(new UserResolvedTasksDto(t));
+        }
+        return resolvedTasks;
+    }
+
+    public List<TaskDto> getAllTasksByUSerId(Long id){
+        List<TaskDto> tasks = new ArrayList<>();
+        for (Task t : taskRepository.findAllByUser_Id(id)) {
+            tasks.add(new TaskDto(t));
+        }
+        return tasks;
+    }
+
+    public RedirectView authUser(OAuth2User principal, RedirectAttributes attributes) {
         User user = new User();
         Map<String, Object> map = principal.getAttributes();
         findByEmail(map.get("email").toString()).orElseGet(() -> {
@@ -80,7 +102,11 @@ public class UserService {
         return new RedirectView("http://localhost:4200/");
     }
 
-    public List<User> findAll(){
-        return userRepository.findAll();
+    public void getResolve(Long taskId, String token) {
+        User user = getUserByEmail(jwtProvider.getLoginFromToken(token));
+        List<Task> tasks = user.getTask();
+        tasks.add(taskService.getTaskById(taskId));
+        user.setTask(tasks);
+        userRepository.save(user);
     }
 }

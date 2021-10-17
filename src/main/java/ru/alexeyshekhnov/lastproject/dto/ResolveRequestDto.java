@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AuthResponseDto {
-    private String token;
+public class ResolveRequestDto {
+    private Long taskId;
+    private String answer;
 }

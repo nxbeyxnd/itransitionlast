@@ -5,13 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.alexeyshekhnov.lastproject.configurations.jwt.JwtProvider;
 import ru.alexeyshekhnov.lastproject.dto.UserpageDto;
-import ru.alexeyshekhnov.lastproject.entities.User;
 import ru.alexeyshekhnov.lastproject.services.UserService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://itransitionproject.herokuapp.com/")
 public class UserPageController {
     @Autowired
     private UserService userService;
@@ -20,7 +19,7 @@ public class UserPageController {
     private JwtProvider jwtProvider;
 
     @GetMapping("/me")
-    public User getAllInfo(@RequestHeader("Authorization") String token){
+    public UserpageDto getAllInfo(@RequestHeader("Authorization") String token){
         return userService.findUserByEmail(jwtProvider.getLoginFromToken(token));
     }
 

@@ -15,13 +15,13 @@ import ru.alexeyshekhnov.lastproject.services.UserService;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://itransitionproject.herokuapp.com/")
 public class OauthController {
     @Autowired
     private UserService userService;
 
     @GetMapping
     public RedirectView showUserPage(@AuthenticationPrincipal OAuth2User principal, RedirectAttributes attributes) {
-        return userService.AuthUser(principal, attributes);
+        return userService.authUser(principal, attributes);
     }
 }

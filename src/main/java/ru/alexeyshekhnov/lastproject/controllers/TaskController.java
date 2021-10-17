@@ -3,6 +3,7 @@ package ru.alexeyshekhnov.lastproject.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.alexeyshekhnov.lastproject.dto.ResolveRequestDto;
 import ru.alexeyshekhnov.lastproject.dto.TaskCreateDto;
 import ru.alexeyshekhnov.lastproject.dto.TaskDto;
 import ru.alexeyshekhnov.lastproject.entities.Task;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/task")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://itransitionproject.herokuapp.com/")
 public class TaskController {
     @Autowired
     private TaskService taskService;
@@ -25,12 +26,17 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskDto> getAllTask(@RequestHeader("Authorization") String token){
-        return taskService.getAllTasks(token);
+    public List<TaskDto> getAllTask(){
+        return taskService.getAllTasks();
     }
 
     @GetMapping("/{id}")
     public Optional<Task> getTask(@PathVariable("id") long id){
-        return taskService.getTaskById(id);
+        return taskService.findTaskById(id);
+    }
+
+    @GetMapping("/resolve")
+    public String getResolve(@RequestBody() ResolveRequestDto userAnswer, @RequestHeader("Authorization") String token){
+        return taskService.getResolve(userAnswer,token);
     }
 }
